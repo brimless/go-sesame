@@ -54,6 +54,14 @@ func (r *PasswordRepoJson) Read(id string) PasswordEntry {
 	return entry
 }
 
+func (r *PasswordRepoJson) ReadAll() []PasswordEntry {
+	var entries []PasswordEntry
+	for _, entry := range r.Repo {
+		entries = append(entries, entry)
+	}
+	return entries
+}
+
 func (r *PasswordRepoJson) Update(id string, newEntry *PasswordEntry) error {
 	r.Repo[id] = *newEntry
 	return overwriteContent(r.Repo, r.Location)

@@ -15,6 +15,7 @@ type PasswordEntry struct {
 type PasswordRepo interface {
 	Create(entry *PasswordEntry) error
 	Read(id string) PasswordEntry
+	ReadAll() []PasswordEntry
 	Update(id string, newEntry *PasswordEntry) error
 	Delete(id string) error
 }

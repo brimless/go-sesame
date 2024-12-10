@@ -15,6 +15,10 @@ func (r *PasswordRepoSqlite) Read(id string) *PasswordEntry {
 	return nil
 }
 
+func (r *PasswordRepoSqlite) ReadAll() []PasswordEntry {
+	return nil
+}
+
 func (r *PasswordRepoSqlite) Update(id string, newEntry *PasswordEntry) error {
 	return nil
 }
