@@ -67,7 +67,10 @@ func (r *PasswordRepoJson) Create(entry *PasswordEntry) error {
 }
 
 func (r *PasswordRepoJson) Read(id string) PasswordEntry {
-	entry := r.Repo[id]
+	entry, ok := r.Repo[id]
+	if !ok {
+		return PasswordEntry{}
+	}
 	return entry
 }
 
