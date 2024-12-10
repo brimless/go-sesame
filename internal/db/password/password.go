@@ -11,6 +11,15 @@ type PasswordEntry struct {
 	CreatedAt time.Time `json:"createdAt"`
 }
 
+func NewPasswordEntry(name, url, hashed string) *PasswordEntry {
+	return &PasswordEntry{
+		Name:      name,
+		Url:       url,
+		Hashed:    hashed,
+		CreatedAt: time.Now(),
+	}
+}
+
 // basic interface to allow for different database implementations
 type PasswordRepo interface {
 	Create(entry *PasswordEntry) error
