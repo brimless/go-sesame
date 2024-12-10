@@ -3,6 +3,7 @@ package password
 import (
 	"encoding/json"
 	"os"
+	"strconv"
 )
 
 // this is a super bootleg implementation just to test out the theory lol
@@ -45,7 +46,10 @@ func NewPasswordRepoJson() *PasswordRepoJson {
 }
 
 func (r *PasswordRepoJson) Create(entry *PasswordEntry) error {
-	r.Repo[entry.Id] = *entry
+	// for now the index will just be an integer
+	newIdx := strconv.Itoa(len(r.Repo) + 1)
+	entry.Id = newIdx
+	r.Repo[newIdx] = *entry
 	return overwriteContent(r.Repo, r.Location)
 }
 
