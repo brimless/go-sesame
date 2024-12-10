@@ -48,7 +48,18 @@ func NewPasswordRepoJson() *PasswordRepoJson {
 
 func (r *PasswordRepoJson) Create(entry *PasswordEntry) error {
 	// for now the index will just be an integer
-	newIdx := strconv.Itoa(len(r.Repo) + 1)
+	// look for a free index
+	idx := len(r.Repo) + 1
+	for {
+		// if the current index is not in, then use it
+		if _, ok := r.Repo[strconv.Itoa(idx)]; !ok {
+			break
+		}
+		// else, we increment anda check
+		idx += 1
+	}
+
+	newIdx := strconv.Itoa(idx)
 	entry.Id = newIdx
 	entry.Hashed = base64.StdEncoding.EncodeToString([]byte(entry.Hashed)) // we need to b64 encode or else it'll be formatted weirdly in json
 	r.Repo[newIdx] = *entry
