@@ -1,6 +1,7 @@
 package password
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"os"
 	"strconv"
@@ -49,6 +50,7 @@ func (r *PasswordRepoJson) Create(entry *PasswordEntry) error {
 	// for now the index will just be an integer
 	newIdx := strconv.Itoa(len(r.Repo) + 1)
 	entry.Id = newIdx
+	entry.Hashed = base64.StdEncoding.EncodeToString([]byte(entry.Hashed)) // we need to b64 encode or else it'll be formatted weirdly in json
 	r.Repo[newIdx] = *entry
 	return overwriteContent(r.Repo, r.Location)
 }
@@ -61,12 +63,15 @@ func (r *PasswordRepoJson) Read(id string) PasswordEntry {
 func (r *PasswordRepoJson) ReadAll() []PasswordEntry {
 	var entries []PasswordEntry
 	for _, entry := range r.Repo {
+		b64DecodedBytes, _ := base64.StdEncoding.DecodeString(entry.Hashed) // we need to decode back from b64
+		entry.Hashed = string(b64DecodedBytes)
 		entries = append(entries, entry)
 	}
 	return entries
 }
 
 func (r *PasswordRepoJson) Update(id string, newEntry *PasswordEntry) error {
+	newEntry.Hashed = base64.StdEncoding.EncodeToString([]byte(newEntry.Hashed)) // we need to b64 encode or else it'll be formatted weirdly in json
 	r.Repo[id] = *newEntry
 	return overwriteContent(r.Repo, r.Location)
 }
